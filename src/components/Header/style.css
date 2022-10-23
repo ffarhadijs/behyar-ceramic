@@ -1,0 +1,28 @@
+.sidebar{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left:0;
+  width: 200px;
+  transform:translateX(200px);
+  background: rgba(214, 214, 214, 0.404);
+  transition: transform 2s;
+}
+
+
+.open{
+  transform: translateX(100px);
+  transition: transform 2s;
+
+}
+
+
+.item:hover > .subItem{
+  z-index: 500;
+  top: -30px;
+  opacity: 100;
+  visibility: visible;
+  right: 100%;
+}
+

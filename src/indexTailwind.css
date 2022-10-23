@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: vazir;
+  font-style: normal;
+  font-weight: normal;
+  src: url("assets/fonts/vazir/woff/Vazir.woff") format("woff"),
+    url("assets/fonts/vazir/ttf/Vazir.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: vazir;
+  font-style: normal;
+  font-weight: 100;
+  src: url("assets/fonts/vazir/woff/Vazir-Thin.woff") format("woff"),
+    url("assets/fonts/vazir/ttf/Vazir-Thin.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: vazir;
+  font-style: normal;
+  font-weight: 800;
+  src: url("assets/fonts/vazir/woff/Vazir-Bold.woff") format("woff"),
+    url("assets/fonts/vazir/ttf/Vazir-Bold.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: vazir;
+  font-style: normal;
+  font-weight: 300;
+  src: url("assets/fonts/vazir/woff/Vazir-Light.woff") format("woff"),
+    url("assets/fonts/vazir/ttf/Vazir-Light.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: vazir;
+  font-style: normal;
+  font-weight: 500;
+  src: url("assets/fonts/vazir/woff/Vazir-Medium.woff") format("woff"),
+    url("assets/fonts/vazir/ttf/Vazir-Medium.ttf") format("truetype");
+  font-display: swap;
+}
+
+
+
+
+
+
+
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+button,
+a,
+label {
+  font-family: "vazir";
+}

@@ -1,0 +1,113 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1170px;
+    margin: 0 auto;
+    border-radius: 25px;
+    overflow: hidden;
+    margin-bottom: 56px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 19px -5px rgb(130 130 130 / 30%);
+}
+
+.section {
+    display: flex;
+    background-color: rgba(118, 118, 118, 0.88);
+    justify-content: space-between;
+    width: 100%;
+}
+
+.videoLogo {
+    font-size: 1.5rem;
+    padding: 30px 24px;
+    line-height: 0;
+    border-bottom: 1px solid rgb(189, 189, 189);
+}
+
+.videoLogo h2 {
+    background-image: url(../../assets/img/pic-sprite.png);
+    background-position-x: 204px;
+    background-position-y: 44px;
+    width: 119px;
+    height: 30px;
+    display: inline-block;
+}
+
+.section ul {
+    list-style: none;
+}
+
+.section li {
+    padding: 15px 27px;
+    border-bottom: 1px solid rgba(118, 118, 118, 0.88);
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+}
+
+.section li:hover {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.section li figure img {
+    display: inline-flex;
+    margin: 0 auto;
+    margin-left: 10px;
+    max-width: none;
+    border-radius: 10px;
+}
+.videoInfo h2{
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+}
+.videoInfo p{
+    display: inline;
+}
+
+.videoInfo p:nth-child(1){
+    margin-left: 30px;
+    font-size: 12px;
+}
+
+.allVideosLink {
+    margin-top: auto;
+    padding: 34px 27px 34px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.allVideosLink a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+.allVideosLink a:hover {
+    color: cornflowerblue;
+}
+
+@media (max-width:1189px) {
+    .section {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: 700px;
+        border-radius: 10px;
+    }
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 800px;
+        margin: 0 auto;
+    }
+    
+}
+
+@media (max-width:800px) {
+    
+}
