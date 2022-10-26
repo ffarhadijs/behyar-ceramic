@@ -14,6 +14,10 @@ import { FiVideo } from "react-icons/fi";
 import ReactPlayer from "react-player/lazy";
 import { MdDownload } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { data } from "autoprefixer";
+import { parse } from "postcss";
 
 const responsive = {
   superLargeDesktop: {
@@ -33,10 +37,20 @@ const responsive = {
     items: 1,
   },
 };
-
+const initialValues = {
+  comment: "",
+};
+const CommentSchema = Yup.object().shape({
+  comment: Yup.string()
+    .required("پر کردن این فیلد الزامی است")
+    .min(3, "حداقل باید 3 حرف باشد"),
+});
 const CourseDetails = () => {
+  const [commentMsg, setCommentMsg] = useState("");
   const [course, setCourse] = useState("");
   const [show, setShow] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [videoIndex, setVideoIndex] = useState("");
   const location = useLocation();
   const id = location?.state.id;
   const getApi = () => {
@@ -50,6 +64,20 @@ const CourseDetails = () => {
   const shorten = (text, n) => {
     return text.length > n ? text.slice(0, n - 1) + "..." : text;
   };
+  const createdNumber = (date) => {
+    const number = date?.slice(0, 2);
+    return number;
+  };
+  const createdText = (string) => {
+    const text = string.slice(2);
+    return text;
+  };
+  const clickHandler = (index) => {
+    setShowLogin(true);
+    setVideoIndex(index);
+    console.log(index);
+  };
+  const userToken = JSON.parse(localStorage.getItem("user"))?.token;
   return (
     <div className="max-w-[1200px] mx-auto px-4">
       <div className="flex flex-row gap-2 px-8 text-gray-500 my-6">
@@ -142,36 +170,58 @@ const CourseDetails = () => {
             </div>
           </div>
           <div className="w-full shadow-md bg-white rounded-md py-4 px-6">
-            <ReactPlayer url={course.video_demo} controls muted={false} />
+            {course.video_demo && (
+              <ReactPlayer
+                url={course.video_demo}
+                controls
+                muted={false}
+                className="mx-auto my-8"
+              />
+            )}
             {course.course_session?.map((item, index) => (
-              <div className=" relative flex flex-row justify-between items-center border rounded-md my-4 text-gray-700 font-vazir py-4 px-6 h-auto">
-                <div className="absolute top-[14px] -right-[14px] rounded-full bg-white border border-blue-700 w-[28px] h-[28px] flex flex-row items-center justify-center">
+              <div className="relative border rounded-md my-4 text-gray-700 font-vazir py-4 px-6 h-auto">
+                <div className="absolute top-[20px] -right-[14px] rounded-full bg-white border border-blue-700 w-[28px] h-[28px] flex flex-row items-center justify-center">
                   <PersianNumber number={index + 1} />
                 </div>
-                <button className=" ">
-                  <PersianNumber number={item.title} />
-                  <i
-                    className={`${
-                      item.type_status === "on" ? "hidden" : "inline-block"
-                    } text-lg text-gray-500 mx-4`}
-                  >
-                    <FaLock />
-                  </i>
-                </button>
-                <div className="flex flex-row justify-start items-center ">
-                  <span className="pl-4 border-l border-gray-300">
-                    <PersianNumber number={item.time} />
-                  </span>
+                <div className=" flex flex-row justify-between items-center ">
                   <button
-                    className={`rounded-full border text-2xl p-1.5 mr-2 ${
-                      item.type_status === "on"
-                        ? "text-[#6fc341] border-[#6fc341]"
-                        : "text-gray-500 border-gray-400"
-                    }`}
+                    className=" flex flex-row items-center"
+                    onClick={() => clickHandler(index)}
                   >
-                    <MdDownload />
+                    <span>{item.title}</span>
+                    <i
+                      className={`${
+                        item.type_status === "on" ? "hidden" : "inline-block"
+                      } text-lg text-gray-500 mx-4`}
+                    >
+                      <FaLock />
+                    </i>
                   </button>
+                  <div className="flex flex-row justify-start items-center ">
+                    <span className="pl-4 border-l border-gray-300">
+                      <PersianNumber number={item.time} />
+                    </span>
+                    <button
+                      onClick={() => clickHandler(index)}
+                      className={`rounded-full border text-2xl p-1.5 mr-2 ${
+                        item.type_status === "on"
+                          ? "text-[#6fc341] border-[#6fc341]"
+                          : "text-gray-500 border-gray-400"
+                      }`}
+                    >
+                      <MdDownload />
+                    </button>
+                  </div>
                 </div>
+                {showLogin && index == videoIndex && !userToken ? (
+                  <span className="text-sm">
+                    برای استفاده از این قسمت باید ابتدا{" "}
+                    <Link to={"/login"} className="text-blue-600 font-semibold">
+                      وارد سایت
+                    </Link>{" "}
+                    شوید
+                  </span>
+                ) : null}
               </div>
             ))}
           </div>
@@ -192,13 +242,13 @@ const CourseDetails = () => {
                     style={{ direction: "rtl" }}
                     key={item.id}
                   >
-                    <Link to={`/blog/details/`} state={{ id: item.id }}>
+                    <Link to={`/course/details/`} state={{ id: item.id }}>
                       <img src={item.image} className="w-full h-40 mb-2" />
                     </Link>
                     <div className="p-2 h-[190px] flex flex-col justify-between items-start">
                       <div className="w-full">
                         <Link
-                          to={`/blog/details/`}
+                          to={`/course/details/`}
                           state={{ id: item.id }}
                           title={item.title}
                         >
@@ -246,13 +296,60 @@ const CourseDetails = () => {
                     <span className="text-sm">{cm.full_name} </span>
                     <span className=" text-gray-500">|</span>
                     <span className="text-sm text-gray-600">
-                      {cm.created_at} ارسال شد{" "}
+                      <PersianNumber number={createdNumber(cm.created_at)} />
+                      {createdText(cm.created_at)} ارسال شد
                     </span>
                   </div>
                 </div>
                 <div className="text-sm font-vazir">{cm.message}</div>
               </div>
             ))}
+            <Formik
+              initialValues={initialValues}
+              validationSchema={CommentSchema}
+              onSubmit={async (values) => {
+                const commentData = {
+                  token: JSON.parse(localStorage.getItem("user")).token,
+                  message: values.comment,
+                };
+                const data = await axios.post(
+                  `https://gbscoine.com/behyar/api/api/v1/store/comment/course/${id}`,
+                  commentData
+                );
+                setCommentMsg(data.data.message);
+                values.comment = "";
+              }}
+            >
+              {({ errors, touched }) => (
+                <Form>
+                  <div className="h-36">
+                    <Field
+                      className="border rounded-md focus:border-gray-400 transition-all duration-300 w-full h-32 p-2 outline-none placeholder:font-vazir font-vazir resize-none"
+                      as="textarea"
+                      name="comment"
+                      placeholder="پیام شما"
+                    />
+                    {errors.comment && touched.comment && (
+                      <span className="text-[#ff0000] text-xs font-bold m-1 block font-vazir">
+                        {errors.comment}
+                      </span>
+                    )}
+                    <span className="text-[#3da833] text-sm font-bold m-1 block font-vazir">
+                      {commentMsg}
+                    </span>
+                  </div>
+                  <button
+                    disabled={
+                      JSON.parse(localStorage.getItem("user"))?.token == null
+                    }
+                    type="submit"
+                    className={`disabled:cursor-not-allowed disabled:hover:text-white disabled:hover:bg-[#0095da] disabled:hover:shadow-none rounded-[50px] mt-6 text-sm font-semibold text-white appearance-none outline-none bg-[#0095da] h-[45px] border-0 w-[100px] p-[12px] cursor-pointer transition-colors duration-300 mr-[10px] font-vazir hover:text-[#0095da] hover:bg-white hover:shadow-[#0095da54] hover:shadow-xl `}
+                  >
+                    ارسال
+                  </button>
+                </Form>
+              )}
+            </Formik>
           </div>
         </div>
       </div>
