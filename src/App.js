@@ -15,30 +15,60 @@ import CourseSub from "./pages/courseSub/CourseSub";
 import CourseChild from "./pages/courseChild/CourseChild";
 import CourseChildList from "./pages/courseChildList/CourseChildList";
 import CourseDetails from "./pages/courseDetails/CourseDetails";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import Profile from "./pages/profile/Profile";
+import ProtectedLogin from "./components/ProtectedRoutes/ProtectedLogIn/ProtectedLogin";
+import ProtectedProfile from "./components/ProtectedRoutes/ProtectedProfile/ProtectedProfile";
+import ProtectedSignUp from "./components/ProtectedRoutes/ProtectedSignUp/ProtectedSignUp";
 
 function App() {
   return (
-    <ScrollToTop>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/ads" element={<Ads />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/blog/details/:slug" element={<BlogDetails />} />
-        <Route path="/*" element={<NotFound />} />
-        <Route path="/contactus" element={<ContactUs />} />
-        <Route path="/about-us" element={<About />} />
-        <Route path="/post/:slug" element={<AdsDetails />} />
-        <Route path="/ads-list" element={<ArchivePosts/>}/>
-        <Route path="/ads-list/:slug" element={<ArchivePosts/>}/>
-        <Route path="/course" element={<CourseCat/>}/>
-        <Route path="/course/:slug" element={<CourseSub/>}/>
-        <Route path="/sub/list/:slug" element={<CourseChild/>}/>
-        <Route path="/child/list/:slug" element={<CourseChildList/>}/>
-        <Route path="/child/list/:slug/:slug" element={<CourseDetails/>}/>
-        <Route path="/course/details/:slug" element={<CourseDetails/>}/>
-      </Routes>
-    </ScrollToTop>
+    <Provider store={store}>
+      <ScrollToTop>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/ads" element={<Ads />} />
+          <Route
+            path="/sign-up"
+            element={
+              <ProtectedSignUp>
+                <SignUp />
+              </ProtectedSignUp>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <ProtectedLogin>
+                <Login />
+              </ProtectedLogin>
+            }
+          />
+          <Route path="/blog/details/:slug" element={<BlogDetails />} />
+          <Route path="/*" element={<NotFound />} />
+          <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/about-us" element={<About />} />
+          <Route path="/post/:slug" element={<AdsDetails />} />
+          <Route path="/ads-list" element={<ArchivePosts />} />
+          <Route path="/ads-list/:slug" element={<ArchivePosts />} />
+          <Route path="/course" element={<CourseCat />} />
+          <Route path="/course/:slug" element={<CourseSub />} />
+          <Route path="/sub/list/:slug" element={<CourseChild />} />
+          <Route path="/child/list/:slug" element={<CourseChildList />} />
+          <Route path="/child/list/:slug/:slug" element={<CourseDetails />} />
+          <Route path="/course/details/:slug" element={<CourseDetails />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedProfile>
+                <Profile />
+              </ProtectedProfile>
+            }
+          />
+        </Routes>
+      </ScrollToTop>
+    </Provider>
   );
 }
 
