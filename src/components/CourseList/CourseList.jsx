@@ -40,23 +40,17 @@ const CourseList = () => {
     <div className={"max-w-7xl mx-auto my-10 px-6"}>
       <div className="flex flex-row justify-between items-center border-b border-gray-300 px-3 py-6 gap-4 overflow-x-auto">
         <div className="flex flex-row justify-start items-center">
-          {courses?.map((course,index) => (
-            <div>
-              <input
-                id={course.id}
-                name={"courseCatBtn"}
-                type={"radio"}
-                key={course.id}
-                defaultChecked={index===0}
-                className={`pb-2 transition-all duration-300 px-4 text-gray-500 min-w-max hidden radioBtn peer`}
+          {courses?.map((course, index) => (
+            <div key={course.id}>
+              <button
                 onClick={() => setCategoryId(course.id)}
-              />
-              <label
-                htmlFor={course.id}
-                className=" cursor-pointer pb-2 px-4 labelTxt peer-checked:border-b peer-checked:border-b-blue-600 peer-checked:text-blue-600 transition-all duration-300"
+                className={`${
+                  categoryId == course.id &&
+                  "border-b border-b-blue-600 text-blue-600 "
+                } pb-2 px-4 min-w-max transition-all duration-300 h-11`}
               >
                 {course.title}
-              </label>
+              </button>
             </div>
           ))}
         </div>
@@ -76,7 +70,10 @@ const CourseList = () => {
           ?.find((item) => item.id === categoryId)
           ?.product.slice(0, 4)
           .map((post) => (
-            <div className="hover:shadow-lg transition-shadow duration-300 shadow-md rounded-lg overflow-hidden h-[350px]">
+            <div
+              key={post.id}
+              className="hover:shadow-lg transition-shadow duration-300 shadow-md rounded-lg overflow-hidden h-[350px]"
+            >
               <Link to={`/${post.slug}`} state={{ id: post.id }} key={post.id}>
                 <img className="w-full h-40" src={post.img} />
               </Link>
