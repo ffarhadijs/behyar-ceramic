@@ -14,13 +14,15 @@ import { useCallback } from "react";
 import { MdOutlineNavigateBefore } from "react-icons/md";
 
 const AdsDetails = () => {
+  const userData=JSON.parse(localStorage.getItem("user"))
   const [post, setPost] = useState({});
   const [copied, setCopied] = useState(false);
   const location = useLocation();
   const id = location.state?.id;
+  console.log(id)
   const getApi = async () => {
     const data = await axios
-      .get(`https://gbscoine.com/behyar/api/api/v1/ads/details/${id}`)
+      .get(`https://gbscoine.com/behyar/api/api/v1/ads/details/${id}/${userData?userData.token:"null"}`)
       .then((res) => setPost(res.data));
     return data;
   };

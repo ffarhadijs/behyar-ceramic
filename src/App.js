@@ -21,6 +21,9 @@ import Profile from "./pages/profile/Profile";
 import ProtectedLogin from "./components/ProtectedRoutes/ProtectedLogIn/ProtectedLogin";
 import ProtectedProfile from "./components/ProtectedRoutes/ProtectedProfile/ProtectedProfile";
 import ProtectedSignUp from "./components/ProtectedRoutes/ProtectedSignUp/ProtectedSignUp";
+import Basket from "./pages/basket/Basket";
+import ProtectedBasket from "./components/ProtectedRoutes/ProtectedBasket/ProtectedBasket";
+import Orders from "./pages/orders/Orders";
 
 function App() {
   return (
@@ -59,11 +62,27 @@ function App() {
           <Route path="/child/list/:slug/:slug" element={<CourseDetails />} />
           <Route path="/course/details/:slug" element={<CourseDetails />} />
           <Route
-            path="/profile"
+            path="/profile/my-orders"
+            element={
+              <ProtectedProfile>
+                <Orders />
+              </ProtectedProfile>
+            }
+          />
+          <Route
+            path="/profile/my-profile"
             element={
               <ProtectedProfile>
                 <Profile />
               </ProtectedProfile>
+            }
+          />
+          <Route
+            path="/profile/basket"
+            element={
+              <ProtectedBasket>
+                <Basket />
+              </ProtectedBasket>
             }
           />
         </Routes>

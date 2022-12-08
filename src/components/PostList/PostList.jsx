@@ -10,7 +10,6 @@ import { RiArchiveDrawerFill } from "react-icons/ri";
 const PostList = () => {
   const [items, setItems] = useState([]);
   const [catId, setCatId] = useState(4);
-  const [active, setActive] = useState(false);
   const getApi = async () => {
     const data = await axios
       .get("https://gbscoine.com/behyar/api/api/v1/post/list")
@@ -20,11 +19,6 @@ const PostList = () => {
   useEffect(() => {
     getApi();
   }, []);
-  const clickHandler = (catId) => {
-    setActive(false);
-    setCatId(catId);
-    setActive(true);
-  };
 
   const shorten = (title, n) => {
     return title.length > n ? title.slice(0, n - 1) + "..." : title;
@@ -42,22 +36,16 @@ const PostList = () => {
       <div className="flex flex-row justify-between items-center border-b border-gray-300 px-3 py-6 gap-4 overflow-x-auto">
         <div className="flex flex-row justify-start items-center">
           {items?.map((item, index) => (
-            <div>
-              <input
-                id={index}
-                name={"postCatBtn"}
-                type={"radio"}
-                key={index}
-                defaultChecked={index === 0}
-                className={`pb-2 transition-all duration-300 px-4 text-gray-500 min-w-max hidden radioBtn peer`}
-                onClick={() => clickHandler(item.cat_id)}
-              />
-              <label
-                htmlFor={index}
-                className=" cursor-pointer pb-2 px-4 labelTxt peer-checked:border-b peer-checked:border-b-blue-600 peer-checked:text-blue-600 transition-all duration-300"
+            <div key={item.cat_id}>
+              <button
+                onClick={() => setCatId(item.cat_id)}
+                className={`${
+                  catId == item.cat_id &&
+                  "border-b border-b-blue-600 text-blue-600"
+                } pb-2 px-4 min-w-max transition-all duration-300 h-11`}
               >
                 {item.cat_name}
-              </label>
+              </button>
             </div>
           ))}
         </div>

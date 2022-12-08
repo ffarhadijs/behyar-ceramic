@@ -48,8 +48,6 @@ const BlogDetails = () => {
   const [blog, setBlog] = useState({});
   const heightRef = useRef(null);
 
-
-
   const getApi = () => {
     axios
       .get(`https://gbscoine.com/behyar/api/api/v1/blog/details/${id}`)
@@ -61,12 +59,11 @@ const BlogDetails = () => {
   }, [id]);
 
   useEffect(() => {
-
     const toggleStciky = () => {
-      if (window.pageYOffset > heightRef.current.clientHeight) {
+      if (window.pageYOffset > heightRef?.current.clientHeight) {
         return setSticky(false);
-      }else{
-        return setSticky(true)
+      } else {
+        return setSticky(true);
       }
     };
     window.addEventListener("scroll", toggleStciky);
@@ -147,8 +144,9 @@ const BlogDetails = () => {
                     <Link
                       to={`blog/details/${item.slug}`}
                       state={{ id: item.id }}
+                      title={item.title}
                     >
-                      <h4 className="px-4 text-base text-[#555] font-semibold hover:text-blue-700 transition-colors duration-500 my-3">
+                      <h4 className="text-ellipsis whitespace-nowrap overflow-hidden px-4 text-sm text-[#555] font-semibold hover:text-blue-700 transition-colors duration-500 my-3">
                         {item.title}
                       </h4>
                     </Link>
@@ -170,7 +168,15 @@ const BlogDetails = () => {
           </div>
         </div>
 
-        <div className={`w-[270px] mx-auto lg:ml-7 lg:mr-4 rounded-lg shadow-lg bg-white  ${sticky?"lg:sticky lg:top-1 " : ` relative top-[${heightRef.current.clientHeight-200}px] right-0`}`}>
+        <div
+          className={`w-[270px] mx-auto lg:ml-7 lg:mr-4 rounded-lg shadow-lg bg-white  ${
+            sticky
+              ? "lg:sticky lg:top-1 "
+              : ` relative top-[${
+                  heightRef.current.clientHeight - 200
+                }px] right-0`
+          }`}
+        >
           <div>
             <img src={blog.image} alt="blog" />
           </div>

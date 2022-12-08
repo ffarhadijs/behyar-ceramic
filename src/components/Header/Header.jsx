@@ -3,15 +3,19 @@ import { Link } from "react-router-dom";
 import Logo from "../../assets/img/logo.png";
 import { TbBell } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
-import { IoIosArrowDown,IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowBack } from "react-icons/io";
 import Hamburger from "./Hamburger";
 import { GiHamburgerMenu } from "react-icons/gi";
 import axios from "axios";
 import { useEffect } from "react";
 import "./style.css";
 import ToolTip from "../ToolTip/ToolTip";
+import { AiOutlineClose } from "react-icons/ai";
+import { FiLogIn } from "react-icons/fi";
 
 function Header() {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  console.log(userData);
   const [burger, setBurger] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
   const getApi = async () => {
@@ -29,7 +33,7 @@ function Header() {
     <div className="px-10">
       <header
         className={
-          "max-w-[1170px] mx-auto flex flex-col lg:flex-row justify-center mb-[50px]"
+          "max-w-[1170px] mx-auto flex flex-col lg:flex-row justify-between mb-[50px]"
         }
       >
         <div className=" bg-[#ffffff] p-[20px] shadow-md w-32 mx-auto lg:mx-4">
@@ -92,8 +96,8 @@ function Header() {
             }
           >
             <nav className={"block mr-[20px] lg:hidden"}>
-              <button onClick={() => setBurger(true)}>
-                <GiHamburgerMenu />
+              <button onClick={() => setBurger(true)} className="text-2xl">
+                {burger ? <AiOutlineClose /> : <GiHamburgerMenu />}
               </button>
 
               <Hamburger burger={burger} setBurger={setBurger} />
@@ -125,19 +129,23 @@ function Header() {
                       </span>
                     )}
                     {item.list ? (
-                      <ul className="group-hover:z-[500] opacity-0  absolute group-hover:top-[6px] group-hover:opacity-100 top-[10px] transition-all duration-500 bg-white shadow-lg border-t-2 border-t-[#0095da] rounded-xl py-4 px-4 mt-[35px] w-max invisible group-hover:visible ">
+                      <ul className="group-hover:z-[50000]  opacity-0  absolute group-hover:top-[6px] group-hover:opacity-100 top-[10px] transition-all duration-500 bg-white shadow-lg border-t-2 border-t-[#0095da] rounded-xl py-4 px-4 mt-[35px] w-max invisible group-hover:visible ">
                         {item.list?.map((item) => (
                           <li
                             key={item.id}
-                            className="item py-2 text-xs text-gray-800 hover:text-[#0095da] border-b-[1px] border-b-transparent hover:scale-105 hover:border-b-[#0095da] transition-all duration-500"
+                            className="item py-2 text-xs text-gray-800 hover:text-[#0095da] border-b-[1px] border-b-transparent hover:scale-105 hover:border-b-[#0095da] transition-all duration-500 z-[500]"
                           >
-                            <Link to={`/${item.slug}`} state={{ id: item.id }} className="flex flex-row justify-between items-center">
+                            <Link
+                              to={`/${item.slug}`}
+                              state={{ id: item.id }}
+                              className="flex flex-row justify-between items-center"
+                            >
                               {item.title}
                               {item.sub?.length ? (
                                 <IoIosArrowBack
                                   className={"text-[15px] mx-1"}
                                 />
-                              ):null}
+                              ) : null}
                             </Link>
                             {item.sub?.length ? (
                               <ul
@@ -172,14 +180,14 @@ function Header() {
               <button className="appearance-none mx-4">
                 <TbBell />
               </button>
-              <ToolTip title={"پروفایل کاربر"}>
-              <Link
-                to="/sign-up"
-                className=" bg-[#0095da] text-[#ffffff] rounded-md shadow-lg mr-4 p-2.5"
-              >
-                <CgProfile />
-              </Link>
-                </ToolTip>
+              <ToolTip title={JSON.parse(localStorage.getItem("user"))?.token?"پروفایل کاربر":"ورود/ ثبت نام"}>
+                <Link
+                  to="/sign-up"
+                  className=" bg-[#0095da] text-[#ffffff] rounded-md shadow-lg mr-4 p-2.5"
+                >
+                  {userData?.status == 200 ? <CgProfile /> : <FiLogIn />}
+                </Link>
+              </ToolTip>
             </div>
           </div>
         </div>

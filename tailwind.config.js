@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        vazir: ['Vazir', "sans-serif"]
+        vazir: ['Vazir', "sans-serif"],
           },
     transitionProperty: {
       'max-height': 'max-height',

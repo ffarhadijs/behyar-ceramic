@@ -71,10 +71,6 @@ const Login = () => {
               token: res.data.token,
               message: res.data.message,
             });
-            console.log(res);
-            console.log(userData);
-            console.log(values);
-            console.log(user);
             localStorage.setItem("user", JSON.stringify(res.data));
           } catch {}
         }}

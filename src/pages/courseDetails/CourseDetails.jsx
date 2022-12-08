@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../../components/HOC/Layout";
 import { Link } from "react-router-dom";
 import { MdOutlineNavigateBefore } from "react-icons/md";
@@ -46,6 +46,7 @@ const CommentSchema = Yup.object().shape({
     .min(3, "حداقل باید 3 حرف باشد"),
 });
 const CourseDetails = () => {
+  const navigate = useNavigate();
   const [commentMsg, setCommentMsg] = useState("");
   const [course, setCourse] = useState("");
   const [show, setShow] = useState(false);
@@ -53,6 +54,7 @@ const CourseDetails = () => {
   const [videoIndex, setVideoIndex] = useState("");
   const location = useLocation();
   const id = location?.state.id;
+
   const getApi = () => {
     axios
       .get(`https://gbscoine.com/behyar/api/api/v1/course/details/${id}`)
@@ -76,6 +78,18 @@ const CourseDetails = () => {
     setShowLogin(true);
     setVideoIndex(index);
     console.log(index);
+  };
+  const buyCourseHandler = () => {
+    if (userToken) {
+      axios
+        .get(
+          `https://gbscoine.com/behyar/api/api/v1/add/to/cart/${userToken}/${id}`
+        )
+        .then(navigate("/profile/basket"));
+    }
+    if (!userToken) {
+      navigate("/login");
+    }
   };
   const userToken = JSON.parse(localStorage.getItem("user"))?.token;
   return (
@@ -123,7 +137,10 @@ const CourseDetails = () => {
               </p>
             ))}
           </div>
-          <button className="bg-green-500 text-white mx-auto w-full py-3 rounded-md hover:bg-green-600 transition-colors duration-300 font-semibold mt-4">
+          <button
+            onClick={buyCourseHandler}
+            className="bg-green-500 text-white mx-auto w-full py-3 rounded-md hover:bg-green-600 transition-colors duration-300 font-semibold mt-4"
+          >
             ثبت نام در این دوره
           </button>
         </div>
@@ -132,15 +149,16 @@ const CourseDetails = () => {
             <h1 className="font-semibold text-lg pb-10">{course.title}</h1>
 
             <div className="w-full">
-              {/* {course.gallery ? (
+              {course.gallery ? (
                 <ImageGallery
                   items={course.gallery}
                   autoPlay={false}
                   showPlayButton={false}
                   showFullscreenButton={false}
                   showNav={false}
+                  showThumbnails={course.gallery.length > 1 ? true : false}
                 />
-              ) : null} */}
+              ) : null}
             </div>
             <div
               className={`  ${

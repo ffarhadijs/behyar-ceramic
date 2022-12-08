@@ -40,6 +40,7 @@ const SignUp = () => {
   const [userData, setUserData] = useState([]);
   const [message, setMessage] = useState(null);
   const [token, setToken] = useState("");
+  const [secondMsg,setSecondMsg]=useState(null)
   const [verifyStatus, setVerifyStatus] = useState("");
   const [verificationCode, setVerificationCode] = useState();
 
@@ -62,6 +63,7 @@ const SignUp = () => {
         console.log(response.data.message);
         console.log(response.data.token);
         setVerifyStatus(response.data.status);
+        setSecondMsg(response.data.message)
       });
   };
 
@@ -80,7 +82,7 @@ const SignUp = () => {
     <div className="max-w-[580px] h-auto px-5 py-10 rounded-2xl mx-auto shadow-2xl">
       {status === 200 ? (
         <div>
-          <h1 className="text-lg mb-5">{message} </h1>
+          <h1 className="text-lg mb-5">{secondMsg?secondMsg:message} </h1>
           <div
             className={styles.divVerify}
             style={{
@@ -98,7 +100,7 @@ const SignUp = () => {
             <button
               onClick={confirmHandler}
               className={
-                "font-semibold rounded-[50px] w-[140px] text-white appearance-none outline-none bg-[#0095da] border-0 p-[12px] font-vazir flex flex-row items-center justify-between cursor-pointer transition-colors duration-300 hover:bg-white hover:text-[#0095da] hover:shadow-xl hover:shadow-[#0095da4d]"
+                "font-semibold rounded-[50px] w-max text-white appearance-none outline-none bg-[#0095da] border-0 px-6 py-3 font-vazir flex flex-row items-center justify-between cursor-pointer transition-colors duration-300 hover:bg-white hover:text-[#0095da] hover:shadow-xl hover:shadow-[#0095da4d] my-4"
               }
             >
               ثبت کد
